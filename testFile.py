@@ -1,11 +1,11 @@
 import unittest
-import Working_SOS_Game
+from Working_SOS_Game import *
 
 
 class testingClass(unittest.TestCase):
     def testBoardSize(self):
-        a = Working_SOS_Game.retBoardEntry()
-        b = Working_SOS_Game.mSpots.len()
+        a = retBoardEntry()
+        b = mSpots.len()
         self.assertEqual(a ^ 2, b)
 
     def turnTest(self):
@@ -13,8 +13,14 @@ class testingClass(unittest.TestCase):
         self.assertEqual(whoseTurn, True)
 
     def testGameType(self):
-        Working_SOS_Game.simpleGame = r1.text()
-        self.assertEqual(simpleGame, 'Simple Game')
+        simpleGame = r1.get()
+        self.assertEqual(simpleGame, 50)
+
+    def testgameInitialized(self):
+        gameIntCheck = gameRan
+        self.assertEqual(gameIntCheck, True)
+    def testMoveMade(self):
+
 
 
 if __name__ == '__main__':
