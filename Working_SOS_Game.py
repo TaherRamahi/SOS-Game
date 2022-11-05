@@ -8,6 +8,15 @@ window.geometry("900x500")
 label = tk.Label(window, text='SOS Game', fg='black', font=('Arial, 12'))
 label.grid(row=0, column=0, padx=5, pady=10)
 
+
+gameRan = False
+
+def checkGameRan():
+    gameRan = True
+
+
+
+
 # Createing Board in Frame Widget, this will be used in order to insure that all game board peices stay together.
 gameBoard = tk.LabelFrame(window, text="Game Board")
 gameBoard.grid(row=3, column=3)
@@ -25,7 +34,7 @@ def retBoardEntry():
 
 
 sizeConfirm = tk.Button(window, text="Create Board", bg='black', fg='white',
-                        command=lambda: printingBoard(BoardEntry.get()))
+                        command=lambda: printingBoard(BoardEntry.get()) and gameRan())
 sizeConfirm.grid(row=0, column=6, padx=5, pady=1)
 
 
@@ -37,7 +46,7 @@ def printingBoard(x):
     # The i  and j are switched i = Columns and j= Rows, This is the Game Board.
     global mSpots
     mSpots = [[tk.Button(gameBoard, text=str(j + 1) + ',' + str(i + 1), font=("Halvetica", 7), height=3, width=6,
-                         bg='#ECECEC', fg='black', command=lambda i=i, j=j: clicking(i, j, slotAvailibility)) for i in
+                         bg='#ECECEC', fg='black', command=lambda i=i, j=j: clicking(i, j, slotAvailibility) , ) for i in
                range(int(BoardEntry.get()))] for j in range(int(BoardEntry.get()))]
 
     # this second Multi demensional array is going to be used to keep track whether the slot in the board is filled by anyone
@@ -77,8 +86,8 @@ def clicking(x, y, turnTrack):
 
 
 # Radio buttons for game type 
-r1 = tk.Radiobutton(window, text="Simple Game", value=4)
-r2 = tk.Radiobutton(window, text="General Game", value=5)
+r1 = tk.Radiobutton(window, text="Simple Game", value= 50)
+r2 = tk.Radiobutton(window, text="General Game", value='General Game')
 r1.grid(row=0, column=1, padx=5, pady=10)
 r2.grid(row=0, column=2, padx=5, pady=10)
 
