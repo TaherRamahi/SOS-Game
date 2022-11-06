@@ -9,6 +9,7 @@ label = tk.Label(window, text='SOS Game', fg='black', font=('Arial, 12'))
 label.grid(row=0, column=0, padx=5, pady=10)
 
 
+
 gameRan = False
 
 def checkGameRan():
@@ -33,6 +34,100 @@ def retBoardEntry():
     return BoardEntry.get()
 
 
+# IDK
+"""
+def checksos(board):
+    w = len(board[0])
+    h = len(board)
+    global firstHor
+    firstHor = True
+
+    # Check for horizontals.
+
+    for row in board:
+        s = ''.join([cell['text'] for cell in row])
+        if 'SOS' in s:
+            if firstHor == True:
+                trackHor = 0
+                firstHor = False
+            trackHor = trackHor +1
+            print("found horizontal sos")
+            print(trackHor)
+        elif 'SOSSOS'in s:
+            trackHor = trackHor + 1
+            print("found horizontal sos")
+            print(trackHor)
+
+    # Check for verticals.
+
+    for col in range(w):
+        s = ''.join([board[i][col]['text']for i in range(h)])
+        if 'SOS' in s:
+
+            print("found vertical sos")
+
+    # Check for diagonals.  There are N-2 diagonals in each direction;
+    # the outermost 2 are too short to hold SOS.
+
+    for offset in range(0,w-2):
+        # Start from the top and go SE.  If offset is 1, the
+        # first string gets 1,0 then 2,1 then 3,2; the other
+        # string gets 0,1 then 1,2 then 2,3.
+        s1 = []
+        s2 = []
+        s3 = []
+        s4 = []
+        for i in range(0,w-offset):
+            s1.append( board[i+offset][i]['text'] )
+            s2.append( board[i][i+offset]['text'] )
+            s3.append( board[i+offset][w-i-1]['text'] )
+            s4.append( board[h-i-1][i+offset]['text'] )
+        if 'SOS' in ''.join(s1) or 'SOS' in ''.join(s2) or \
+           'SOS' in ''.join(s3) or 'SOS' in ''.join(s4):
+            print("found diagonal sos")
+
+board = []
+for i in range(5):
+    board.append( [{'text':' '} for _ in range(5)] )
+
+board[1][1]['text'] = 'S'
+board[1][2]['text'] = 'O'
+board[1][3]['text'] = 'S'
+
+board[1][4]['text'] = 'S'
+board[2][4]['text'] = 'O'
+board[3][4]['text'] = 'S'
+
+board[2][2]['text'] = 'S'
+board[3][3]['text'] = 'O'
+board[4][4]['text'] = 'S'
+"""
+#IDK END
+
+
+# The i and j I belive are switched need the order rn is coloumn then row [TESTING REQUIRED]
+def checkAround(board, i, j):
+    #Horizontal check
+    if board[i+1][j]['text'] == 'O' and board[i+2][j]['text'] == 'S':
+        board[i][j].config(text= 'M')
+        board[i + 1][j].config(text= 'M')
+        board[i + 2][j].config(text= 'M')
+        print('Its a Match horizontaly')
+
+        #vertcal check
+    elif board[i][j+1]['text'] == 'O' and board[i][j+2]['text'] == 'S':
+        print( 'Its a Match vertically')
+
+# The i and j I belive are switched the order rn is coloumn then row [TESTING REQUIRED]
+def findSOS(board):
+    # horizontal
+    for i in range(int(BoardEntry.get())):
+        for j in range(int(BoardEntry.get())):
+
+            if board[i][j]['text'] == 'S':
+                checkAround(board, i, j)
+
+
 sizeConfirm = tk.Button(window, text="Create Board", bg='black', fg='white',
                         command=lambda: printingBoard(BoardEntry.get()) and gameRan())
 sizeConfirm.grid(row=0, column=6, padx=5, pady=1)
@@ -46,8 +141,10 @@ def printingBoard(x):
     # The i  and j are switched i = Columns and j= Rows, This is the Game Board.
     global mSpots
     mSpots = [[tk.Button(gameBoard, text=str(j + 1) + ',' + str(i + 1), font=("Halvetica", 7), height=3, width=6,
-                         bg='#ECECEC', fg='black', command=lambda i=i, j=j: clicking(i, j, slotAvailibility) , ) for i in
+                         bg='#ECECEC', fg='black', command=lambda i=i, j=j: clicking(i, j, slotAvailibility)) for i in
                range(int(BoardEntry.get()))] for j in range(int(BoardEntry.get()))]
+
+
 
     # this second Multi demensional array is going to be used to keep track whether the slot in the board is filled by anyone
     global slotAvailibility
@@ -71,18 +168,21 @@ whoseTurn = True
 # This Functions is ment to dictate what happens when we click on of our squares
 def clicking(x, y, turnTrack):
     global whoseTurn
+
     # Keeps track of whose turn it is X is True O is False
     if slotAvailibility[y][x] == 0 and whoseTurn == True:
-        mSpots[y][x].config(text="S", fg='blue')
+        mSpots[y][x].config(text='S', fg='blue')
         slotAvailibility[y][x] = 1
         whoseTurn = False
 
     elif whoseTurn == False and slotAvailibility[y][x] == 0:
-        mSpots[y][x].config(text="O", fg='red')
+        mSpots[y][x].config(text='O', fg='red')
         slotAvailibility[y][x] = 2
         whoseTurn = True
     else:
         messagebox.showwarning("Invalid Input", "This Square has Spot Taken Choose Another One")
+
+    findSOS(mSpots)
 
 
 # Radio buttons for game type 
@@ -92,7 +192,7 @@ r1.grid(row=0, column=1, padx=5, pady=10)
 r2.grid(row=0, column=2, padx=5, pady=10)
 
 # Player Choice for S or O
-p1Frame = tk.Frame();
+p1Frame = tk.Frame()
 Player1Text = tk.Label(text="Player 1", fg='black', font=('Arial, 12'))
 Player1Text.grid(row=4, column=0)
 P1S = tk.Radiobutton(text="S", fg='blue', font=('Arial, 12'), value=2)
