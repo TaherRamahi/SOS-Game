@@ -8,14 +8,14 @@ window.geometry("900x500")
 label = tk.Label(window, text='SOS Game', fg='black', font=('Arial, 12'))
 label.grid(row=0, column=0, padx=5, pady=10)
 
-
-
 gameRan = False
 
+
+def stopGame(x):
+    messagebox.showinfo('Game Over',"A match has been made and "+ x +" has Won!")
+    window.destroy()
 def checkGameRan():
     gameRan = True
-
-
 
 
 # Createing Board in Frame Widget, this will be used in order to insure that all game board peices stay together.
@@ -31,9 +31,11 @@ BoardEntry.grid(row=0, column=5, padx=5, pady=10)
 
 
 def retBoardEntry():
-    return BoardEntry.get()
+    return int(BoardEntry.get())
 
-
+# This variable to track  which game mode we are runing # True is Simple and False is General
+gameType = tk.BooleanVar()
+gameType.set(True)
 # IDK
 """
 def checksos(board):
@@ -102,28 +104,125 @@ board[2][2]['text'] = 'S'
 board[3][3]['text'] = 'O'
 board[4][4]['text'] = 'S'
 """
-#IDK END
 
 
-# The i and j I belive are switched need the order rn is coloumn then row [TESTING REQUIRED]
+# IDK END
+
+
 def checkAround(board, i, j):
-    #Horizontal check
-    if board[i+1][j]['text'] == 'O' and board[i+2][j]['text'] == 'S':
-        board[i][j].config(text= 'M')
-        board[i + 1][j].config(text= 'M')
-        board[i + 2][j].config(text= 'M')
-        print('Its a Match horizontaly')
+    # Horizontal check
+    if (i + 2) < retBoardEntry():
+        if board[i + 1][j]['text'] == 'O' and board[i + 2][j]['text'] == 'S':
+            if matchMade[i + 1][j] == 0 and matchMade[i+2][j] == 0:
+                if whoseTurn == True:
+                    board[i][j].config(bg='#FFBDBD')
+                    board[i+1][j].config(bg='#FFBDBD')
+                    board[i+2][j].config(bg='#FFBDBD')
 
-        #vertcal check
-    elif board[i][j+1]['text'] == 'O' and board[i][j+2]['text'] == 'S':
-        print( 'Its a Match vertically')
+                    matchMade[i][j] = 2
+                    matchMade[i + 1][j] = 2
+                    matchMade[i + 2][j] = 2
+                    if gameType.get() == True:
+                        stopGame("Player 2")
+
+
+
+                else:
+                    board[i][j].config(bg='#B2E4FF')
+                    board[i+1][j].config(bg='#B2E4FF')
+                    board[i+2][j].config(bg='#B2E4FF')
+
+                    matchMade[i][j] = 1
+                    matchMade[i+1][j] = 1
+                    matchMade[i+2][j] = 1
+                    if gameType.get() == True:
+                        stopGame("Player 1")
+                print('Its a Match verticaly')
+        # vertcal check
+    if (j + 2) < retBoardEntry():
+        if board[i][j + 1]['text'] == 'O' and board[i][j + 2]['text'] == 'S':
+            if matchMade[i][j + 1] == 0 and matchMade[i][j + 2] == 0:
+
+                if whoseTurn == True:
+                    board[i][j].config(bg='#FFBDBD')
+                    board[i][j + 1].config(bg='#FFBDBD')
+                    board[i][j + 2].config(bg='#FFBDBD')
+                    matchMade[i][j] = 2
+                    matchMade[i][j + 1] = 2
+                    matchMade[i][j + 2] = 2
+                    if gameType.get() == True:
+                        stopGame("Player 2")
+                else:
+                    board[i][j].config(bg='#B2E4FF')
+                    board[i][j + 1].config(bg='#B2E4FF')
+                    board[i][j + 2].config(bg='#B2E4FF')
+
+                    matchMade[i][j] = 1
+                    matchMade[i][j+1] = 1
+                    matchMade[i][j+2] = 1
+                    if gameType.get() == True:
+                        stopGame("Player 1")
+                print('Its a Match horizontaly')
+    if (i + 2) < retBoardEntry() and (j + 2) < retBoardEntry():
+        if board[i + 1][j + 1]['text'] == 'O' and board[i + 2][j + 2]['text'] == 'S':
+             if matchMade[i + 1][j + 1] == 0 and matchMade[i + 2][j + 2] == 0:
+                if whoseTurn == True:
+                    board[i][j].config(bg='#FFBDBD')
+                    board[i + 1][j + 1].config(bg='#FFBDBD')
+                    board[i + 2][j + 2].config(bg='#FFBDBD')
+
+                    matchMade[i][j] = 2
+                    matchMade[i + 1][j + 1] = 2
+                    matchMade[i + 2][j + 2] = 2
+                    if gameType.get() == True:
+                        stopGame("Player 2")
+
+
+                else:
+                    board[i][j].config(bg='#B2E4FF')
+                    board[i + 1][j + 1].config(bg='#B2E4FF')
+                    board[i + 2][j + 2].config(bg='#B2E4FF')
+
+                    matchMade[i][j] = 1
+                    matchMade[i+1][j + 1] = 1
+                    matchMade[i+2][j + 2] = 1
+                    if gameType.get() == True:
+                        stopGame("Player 1")
+                print('Its a match Diagnally right')
+    if (i + 2) < retBoardEntry() and (j - 2) > -1:
+        if board[i + 1][j - 1]['text'] == 'O' and board[i + 2][j - 2]['text'] == 'S':
+            if matchMade[i + 1][j - 1] == 0 and matchMade[i + 2][j - 2] == 0:
+                if whoseTurn == True:
+                    board[i][j].config(bg='#FFBDBD')
+                    board[i + 1][j - 1].config(bg='#FFBDBD')
+                    board[i + 2][j - 2].config(bg='#FFBDBD')
+
+                    matchMade[i][j] = 2
+                    matchMade[i + 1][j - 1] = 2
+                    matchMade[i + 2][j - 2] = 2
+                    if gameType.get() == True:
+                        stopGame("Player 2")
+
+
+
+                else:
+                    board[i][j].config(bg='#B2E4FF')
+                    board[i + 1][j - 1].config(bg='#B2E4FF')
+                    board[i + 2][j - 2].config(bg='#B2E4FF')
+
+                    matchMade[i][j] = 1
+                    matchMade[i + 1][j - 1] = 1
+                    matchMade[i + 2][j - 2] = 1
+                    if gameType.get() == True:
+                        stopGame("Player 1")
+            print('Its a match Diagnally left')
+
 
 # The i and j I belive are switched the order rn is coloumn then row [TESTING REQUIRED]
 def findSOS(board):
     # horizontal
     for i in range(int(BoardEntry.get())):
         for j in range(int(BoardEntry.get())):
-
             if board[i][j]['text'] == 'S':
                 checkAround(board, i, j)
 
@@ -137,14 +236,14 @@ sizeConfirm.grid(row=0, column=6, padx=5, pady=1)
 def printingBoard(x):
     # print = tk.Label(text=BoardEntry.get(), bg='blue', fg='white')
     # print.grid(row=3, column=2)
+    global matchMade
+    matchMade = [[0 for xt in range(retBoardEntry())] for yt in range(retBoardEntry())]
 
     # The i  and j are switched i = Columns and j= Rows, This is the Game Board.
     global mSpots
     mSpots = [[tk.Button(gameBoard, text=str(j + 1) + ',' + str(i + 1), font=("Halvetica", 7), height=3, width=6,
                          bg='#ECECEC', fg='black', command=lambda i=i, j=j: clicking(i, j, slotAvailibility)) for i in
                range(int(BoardEntry.get()))] for j in range(int(BoardEntry.get()))]
-
-
 
     # this second Multi demensional array is going to be used to keep track whether the slot in the board is filled by anyone
     global slotAvailibility
@@ -186,8 +285,8 @@ def clicking(x, y, turnTrack):
 
 
 # Radio buttons for game type 
-r1 = tk.Radiobutton(window, text="Simple Game", value= 50)
-r2 = tk.Radiobutton(window, text="General Game", value='General Game')
+r1 = tk.Radiobutton(window, text="Simple Game",variable=gameType,value= True)
+r2 = tk.Radiobutton(window, text="General Game",variable=gameType, value= False)
 r1.grid(row=0, column=1, padx=5, pady=10)
 r2.grid(row=0, column=2, padx=5, pady=10)
 
@@ -207,5 +306,9 @@ P2S = tk.Radiobutton(text="S", fg='red', font='Arial, 12', value=1)
 P2S.grid(row=5, column=5)
 P2O = tk.Radiobutton(text="O", fg='red', font='Arial, 12', value=2)
 P2O.grid(row=6, column=5)
+
+class player:
+    def __init__(self, x):
+        self.icon = x
 
 window.mainloop()
