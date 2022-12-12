@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from math import *
 import random
+
 # This creates the window for the GUI
 window = tk.Tk()
 window.title("Grid Manager")
@@ -9,21 +10,25 @@ window.geometry("900x500")
 label = tk.Label(window, text='SOS Game', fg='black', font=('Arial, 12'))
 label.grid(row=0, column=0, padx=5, pady=10)
 
+
 class player:
     playerGamePeice = ''
     # This Variable below is to track if we are working with a Computer or Human
     isThisCom = False
+
     def __init__(self, x, playerSelection):
         self.playerScore = x
         self.playerGamePeice = playerSelection
+
     def updatingPlayerSelection(self, x):
         self.playerGamePeice = x
+
     def printAi(self, whoseTurn):
-            pass
+        pass
 
 
 player1 = player(0, 'S')
-player2 = player(0,'O')
+player2 = player(0, 'O')
 
 
 # This Class is for Computer Moves will be making a simple and a complex version
@@ -31,16 +36,15 @@ class comAI:
     playerGamePeice = ''
     # This Variable below is to track if we are working with a Computer or Human
     isThisCom = True
+
     def __init__(self, playerNum):
         # Assigning which player we are True player 1 and False is player 2
         whichPlayer = playerNum
 
-
-
     def rowReturner(self):
         rowComputer = random.randint(1, retBoardEntry())
-        print ('////////////////////////////////')
-        print (str(rowComputer -1))
+        print('////////////////////////////////')
+        print(str(rowComputer - 1))
         return rowComputer - 1
 
     def columnReturner(self):
@@ -48,14 +52,19 @@ class comAI:
         print('////////////////////////////////')
         print(str(columnComputer - 1))
         return columnComputer - 1
+
     def printAi(self, whoseTurn):
 
-        i = self.rowReturner()
+        q = self.rowReturner()
         j = self.columnReturner()
         tempTurnTrack = whoseTurn
-        print('Row '+str(i)+' Col ' + str(j))
-        tempList = [i,j]
-        if slotAvailibility[i][j] == 0:
+        print('Row ' + str(q) + ' Col ' + str(j))
+        tempList = [q, j]
+        res = [i for i in tempList if i is not None]
+        if slotAvailibility[q][j] == 0:
+            print('&&&&&&&&&&&&&&&&&&')
+            print(tempList)
+            print('&&&&&&&&&&&&&&&&&&')
             return tempList
 
         else:
@@ -68,13 +77,14 @@ var2 = tk.IntVar()
 var1.set(0)
 var2.set(1)
 
+
 # UPDATE IN PROGRESS (TRYING TO SET THE ENTITIES AND THERE LOGOS)
 def settingTheEntities(optionSelected, whichOfPlayers):
     if whichOfPlayers == 1:
         global player1
         if optionSelected == 0:
-            player1 .playerGamePeice = 'S'
-        elif  optionSelected == 1:
+            player1.playerGamePeice = 'S'
+        elif optionSelected == 1:
             player1.playerGamePeice = 'O'
         else:
             player1 = comAI(1)
@@ -83,13 +93,13 @@ def settingTheEntities(optionSelected, whichOfPlayers):
         global player2
         if optionSelected == 0:
             player2.playerGamePeice = 'S'
-        elif  optionSelected == 1:
+        elif optionSelected == 1:
             player2.playerGamePeice = 'O'
         else:
             player2 = comAI(2)
 
 
-def setPlayerSelection( playerSelection, whichPlayer):
+def setPlayerSelection(playerSelection, whichPlayer):
     if whichPlayer == 1:
         player1.selection = var1.get()
     elif whichPlayer == 2:
@@ -97,25 +107,31 @@ def setPlayerSelection( playerSelection, whichPlayer):
 
     print('we got inside of the alteration')
 
+
 p1Frame = tk.Frame()
 Player1Text = tk.Label(text="Player 1", fg='black', font=('Arial, 12'))
 Player1Text.grid(row=4, column=0)
-P1S = tk.Radiobutton(text="S", fg='blue', font=('Arial, 12'),variable= var1, value=0 ,command= lambda:[settingTheEntities(0, 1),setPlayerSelection(0, 1)])
+P1S = tk.Radiobutton(text="S", fg='blue', font=('Arial, 12'), variable=var1, value=0,
+                     command=lambda: [settingTheEntities(0, 1), setPlayerSelection(0, 1)])
 P1S.grid(row=5, column=0)
-P1O = tk.Radiobutton(text="O", fg='blue', font=('Arial, 12'),variable= var1 ,value=1 ,command= lambda:[settingTheEntities(1, 1),setPlayerSelection(1, 1)])
+P1O = tk.Radiobutton(text="O", fg='blue', font=('Arial, 12'), variable=var1, value=1,
+                     command=lambda: [settingTheEntities(1, 1), setPlayerSelection(1, 1)])
 P1O.grid(row=6, column=0)
-P1C = tk.Radiobutton(text="Computer", fg='blue', font=('Arial, 12'),variable= var1 ,value=2,command= lambda:[settingTheEntities(2, 1),setPlayerSelection(2, 1)])
+P1C = tk.Radiobutton(text="Computer", fg='blue', font=('Arial, 12'), variable=var1, value=2,
+                     command=lambda: [settingTheEntities(2, 1), setPlayerSelection(2, 1)])
 P1C.grid(row=7, column=0)
-
 
 p2Frame = tk.Frame(master=window, width=100, height=100, bg="red")
 Player2Text = tk.Label(text="Player 2", fg='black', font=('Arial, 12'))
 Player2Text.grid(row=4, column=5)
-P2S = tk.Radiobutton(text="S", fg='red', font='Arial, 12',variable= var2, value=0 , command= lambda: [settingTheEntities(0, 2),setPlayerSelection(0, 2)])
+P2S = tk.Radiobutton(text="S", fg='red', font='Arial, 12', variable=var2, value=0,
+                     command=lambda: [settingTheEntities(0, 2), setPlayerSelection(0, 2)])
 P2S.grid(row=5, column=5)
-P2O = tk.Radiobutton(text="O", fg='red', font='Arial, 12',variable= var2, value=1, command= lambda:[settingTheEntities(1, 2),setPlayerSelection(1, 2)])
+P2O = tk.Radiobutton(text="O", fg='red', font='Arial, 12', variable=var2, value=1,
+                     command=lambda: [settingTheEntities(1, 2), setPlayerSelection(1, 2)])
 P2O.grid(row=6, column=5)
-P2C = tk.Radiobutton(text="Computer", fg='red', font=('Arial, 12'),variable= var2, value=2, command= lambda:[settingTheEntities(2, 2),setPlayerSelection(2, 2)])
+P2C = tk.Radiobutton(text="Computer", fg='red', font=('Arial, 12'), variable=var2, value=2,
+                     command=lambda: [settingTheEntities(2, 2), setPlayerSelection(2, 2)])
 P2C.grid(row=7, column=5)
 # End Player Selection
 
@@ -125,12 +141,12 @@ firstRunGenGameStop = tk.BooleanVar()
 firstRunGenGameStop.set(True)
 
 
-
-
-#This function to be called when simple game is ready to be terminated
+# This function to be called when simple game is ready to be terminated
 def simpleStopGame(x):
     messagebox.showinfo('Game Over', "A match has been made and " + x + " has Won!")
     window.destroy()
+
+
 def generalStopGame():
     print("We are in the Gen Stop Game")
 
@@ -164,6 +180,9 @@ def checkGameRan():
     gameRan = True
 
 
+gameRec = tk.BooleanVar()
+gameRec.set(True)
+
 # Createing Board in Frame Widget, this will be used in order to insure that all game board peices stay together.
 gameBoard = tk.LabelFrame(window, text="Game Board")
 gameBoard.grid(row=3, column=3)
@@ -186,6 +205,7 @@ def retBoardEntry():
 # This variable to track which game mode we are runing # True is Simple and False is General
 gameType = tk.BooleanVar()
 gameType.set(True)
+
 
 # This is the Algorythm to check if we have an SOS
 def checkAround(board, i, j):
@@ -331,6 +351,7 @@ def findSOS(board):
         for j in range(int(BoardEntry.get())):
             if board[i][j]['text'] == 'S':
                 checkAround(board, i, j)
+                generalStopGame()
 
 
 sizeConfirm = tk.Button(window, text="Create Board", bg='black', fg='white',
@@ -371,12 +392,13 @@ def printingBoard(x):
 whoseTurn = True
 
 
-# Passed the Rows and columns in the right order X is Rows and Y is Columns 
+# Passed the Rows and columns in the right order X is Rows and Y is Columns
 # This Functions is ment to dictate what happens when we click on of our squares
 def clicking(x, y):
     global whoseTurn
 
-    #This Set of If statments is ment to insure that the computer is a assigned the correct Variable
+    printRec(x, y)
+    # This Set of If statments is ment to insure that the computer is a assigned the correct Variable
     if player1.isThisCom == False and player2.isThisCom == True:
         if player1.playerGamePeice == 'S':
             player2.playerGamePeice = 'O'
@@ -412,9 +434,9 @@ def clicking(x, y):
         whoseTurn = False
 
     elif whoseTurn == False and slotAvailibility[y][x] == 0 and player2.isThisCom == False:
-         mSpots[y][x].config(text=player2.playerGamePeice, fg='red')
-         slotAvailibility[y][x] = 2
-         whoseTurn = True
+        mSpots[y][x].config(text=player2.playerGamePeice, fg='red')
+        slotAvailibility[y][x] = 2
+        whoseTurn = True
 
     elif whoseTurn == True and player1.isThisCom == True:
         i = tempList[0]
@@ -433,8 +455,8 @@ def clicking(x, y):
     else:
         messagebox.showwarning("Invalid Input", "This Square has Spot Taken Choose Another One")
 
-    if player1.isThisCom== True and player2.isThisCom == True:
-        clicking(x,y)
+    if player1.isThisCom == True and player2.isThisCom == True:
+        clicking(x, y)
     print(slotAvailibility)
     findSOS(mSpots)
 
@@ -444,6 +466,21 @@ r1 = tk.Radiobutton(window, text="Simple Game", variable=gameType, value=True)
 r2 = tk.Radiobutton(window, text="General Game", variable=gameType, value=False)
 r1.grid(row=0, column=1, padx=5, pady=10)
 r2.grid(row=0, column=2, padx=5, pady=10)
+
+
+def printRec(i, j):
+    with open('RecordingGame.txt', 'a') as f:
+
+        if whoseTurn == True:
+            f.write('Player Move Made: ' + 'X Player moved to [' + str(i) + ']' + '[' + str(j) + '] \n')
+        else:
+            f.write('Player Move Made: ' + 'Y Player moved to [' + str(i) + ']' + '[' + str(j) + '] \n')
+        f.close()
+    print('Test Suc')
+
+
+r3 = tk.Checkbutton(window, text="Record Game", variable=gameRec, onvalue=True, offvalue=False)
+r3.grid(row=1, column=1, padx=5, pady=10)
 
 # Player Choice for S or O
 
